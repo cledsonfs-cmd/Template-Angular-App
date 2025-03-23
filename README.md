@@ -4,9 +4,8 @@
 
 ## Description
 
-[Template-Java-API](https://github.com/cledsonfs-cmd/Template-Java-API): Template para o desenvolvimento de APIs com base na linguagem Java.
+[Template-Angular-Front](https://github.com/cledsonfs-cmd/Template-Angular-Front): Template para o desenvolvimento de APIs com base no framework Angular 15.2.0
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0
 
 ## Install dependencies
 Run `npm install` 
