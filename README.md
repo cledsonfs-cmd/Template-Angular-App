@@ -1,6 +1,9 @@
 # TemplateAngularFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.2.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0
+
+## Install dependencies
+Run `npm install` 
 
 ## Development server
 
