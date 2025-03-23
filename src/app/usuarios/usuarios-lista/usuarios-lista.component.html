@@ -1,0 +1,51 @@
+<h1 class="mt-4">Usuarios</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Usuários</li>
+</ol>
+<div class="container ml-0 mr-0 pl-0 pr-0">
+<br/>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <button class="btn btn-warning" (click)="novoUsuario()">
+                        <i class="fa fa-plus me-1"></i>
+                        NOVO USUÁRIO
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-condesed table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>                                
+                                    <th>LOGIN</th>                                                                
+                                    <th class="d-none d-md-table-cell">ROLE</th>
+                                    <th class="d-none d-md-table-cell">ATIVO</th> 
+                                    <th></th>                       
+                                </tr>
+                            </thead>                
+                            <tbody>
+                                <tr *ngFor="let usuario of usuarios; let i = index ">
+                                    <td>{{usuario.id}}</td>
+                                    <td>{{usuario.login}}</td>
+                                    <td class="d-none d-md-table-cell">{{usuario.role}}</td>
+                                    <td class="d-none d-md-table-cell">{{usuario.ativo ? 'SIM' : 'NÃO'}}</td>
+                                    <td>
+                                        <button class="btn btn-primary" routerLink="/usuarios/editar/{{usuario.id}}" *ngIf="usuario.login !== 'adm@template-angular-app.com'">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+        
+        
+    </div>

@@ -1,0 +1,89 @@
+<h1 class="mt-4">Usuarios</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"> <a routerLink="/usuarios"> Usuarios</a></li>    
+    <li class="breadcrumb-item active"> Cadastro </li>
+</ol>
+<div class="container">
+    <div class="alert alert-danger" *ngFor="let erro of erros">
+        {{ erro }}
+    </div>
+    <div class="alert alert-success" *ngIf="mensagemSucesso">
+        {{ mensagemSucesso }}
+    </div>
+    <form action="">
+        <div class="row">            
+            <div class="col-md-2">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1" style="width: 100px;">Id:</span>
+                    </div>
+                    <input type="text" class="form-control" disabled="true" name="id" [ngModel]="usuario.id" >
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1" style="width: 100px;">Login:</span>
+                    </div>
+                    <input type="text" class="form-control" 
+                        name="login" 
+                        required 
+                        placeholder="fulano@email.com" 
+                        [(ngModel)]="usuario.login" [disabled]="this.usuario.id !== undefined">
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="!usuario.id">
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1" style="width: 100px;">Password:</span>
+                    </div>
+                    <input type="password" class="form-control" name="password" required placeholder="8 digitos"  [(ngModel)]="usuario.password">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100px;" 
+                        [disabled]="this.usuario.id !== undefined">Role:</button>
+                        <div class="dropdown-menu">
+                            <div *ngFor="let op_r of roles">
+                                <a class="dropdown-item" (click)="selecionarRole(op_r)">{{ op_r }}</a>
+                            </div>                        
+                        </div>
+                    </div>                
+                    <input type="text" class="form-control" disabled="true" id="inputAno" placeholder="" aria-label="Input group example" aria-describedby="btnGroupAddon" name="ano" [ngModel]="usuario.role"/>
+                </div>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">
+                        <input class="form-check" id="inputRememberAtivo" type="checkbox" name="ativo" [(ngModel)]="usuario.ativo" />
+                    </span>
+                    </div>
+                    <input type="text" class="form-control" disabled="true" value="Ativo" name="ativo">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success" (click)="salvar()" *ngIf="usuario.role !== 'ADMIN'">
+                    <i class="fa fa-save"></i> Salvar                    
+                </button>
+
+                <button type="button" class="btn btn-info  ml-1" (click)="back()">
+                    <i class="fa fa-arrow-alt-circle-left"></i> Voltar
+                </button>
+            </div>                
+         
+        </div>
+    </form>
+</div>
