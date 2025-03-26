@@ -6,6 +6,8 @@
 
 [Template-Angular-Front](https://github.com/cledsonfs-cmd/Template-Angular-Front): Template para o desenvolvimento de APIs com base no framework Angular 15.2.0
 
+## Install Angular 15
+npm install -g @angular/cli@15
 
 ## Install dependencies
 Run `npm install` 
