@@ -1,52 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
 import { MenuItem } from '../../interface/MenuItem';
+import { ConfiguracaoService } from 'src/app/service/configuracao.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit{
+export class SidebarComponent implements OnInit {
   usuarioLogado: string = '';
-  role:string = '';
-  menuItens: MenuItem[] =[
-    {label: 'Sistemas', icon:'', route:'', expanded: false,children: [ {label: 'Dashboard', icon:'fas fa-tachometer-alt', route:'"/home',expanded: false}]},
-    {label: 'Serviços', icon:'', route:'', expanded: false,children: [ 
-                                                        {label: 'Servico 1', icon:'fas fa-columns', route:'/servicos/servico1',expanded: false},
-                                                        {label: 'Servico 2', icon:'fas fa-columns', route:'/servicos/servico2',expanded: false},
-                                                        {label: 'Servico 3', icon:'fas fa-columns',expanded: false, children:[
-                                                          {label: 'Especificação 1', icon:'fas fa-tachometer-alt', route:'"/especificacoes/especificacao1',expanded: false},
-                                                          {label: 'Especificação 2', icon:'fas fa-tachometer-alt', route:'"/especificacoes/especificacao2',expanded: false}
-                                                        ]}
-                                                      ]},
-    {label: 'Relatórios', icon:'', route:'',expanded: false, children: [ 
-                                                        {label: 'Relatorio 1', icon:'fas fa-list', route:'/relatorios/relatorio1',expanded: false},
-                                                        {label: 'Relatorio 2', icon:'fas fa-list', route:'/relatorios/relatorio2',expanded: false},
-                                                        {label: 'Relatorio 3', icon:'fas fa-list', route:'/relatorios/relatorio3',expanded: false}
-                                                      ]},
-    {label: 'Configurações', icon:'', route:'',expanded: false, children: [ {label: 'Usuários', icon:'fas fa-users', route:'/usuarios',expanded: false}]}
-  ]
-  cdr: any;
+  role: string = '';
+  menuItems: MenuItem[] = [];  
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private configuracaoService: ConfiguracaoService,
+    private cdr: ChangeDetectorRef  
   ) { 
     this.usuarioLogado = authService?.getUsuarioAutenticado();
-    this.role = authService?.getRole();
+    this.role = authService?.getRole();    
   }
 
   ngOnInit(): void {
+    // Carregar o menu ao inicializar
+    this.configuracaoService.getMenu().subscribe(
+      (data) => {        
+        this.menuItems = data;  
+      },
+      (error) => {
+        console.error('Erro ao carregar o menu:', error);
+      }
+    );
+    
+    // Recuperando o estado do menu do localStorage
     const savedState = localStorage.getItem('menuState');
     if (savedState) {
-      this.menuItens = JSON.parse(savedState);
+      this.menuItems = JSON.parse(savedState);  
     }
   }
-  
 
-  onLogout():void {
+  onLogout(): void {
     this.authService.encerrarSessao();
     this.router.navigate(['/login']);
   }
@@ -54,11 +50,10 @@ export class SidebarComponent implements OnInit{
   toggleMenu(item: MenuItem): void {
     item.expanded = !item.expanded;
     
-    // 🔹 Salvar estado no Local Storage
-    localStorage.setItem('menuState', JSON.stringify(this.menuItens));
-  
+    // Salvar estado do menu no localStorage
+    localStorage.setItem('menuState', JSON.stringify(this.menuItems));
+    
+    // Forçar detecção de mudanças para atualizar o view
     this.cdr.markForCheck();
   }
-  
-  
 }
