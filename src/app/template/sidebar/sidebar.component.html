@@ -1,56 +1,57 @@
 <div id="layoutSidenav_nav">
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-        <div class="sb-sidenav-menu">
+        <div class="sb-sidenav-menu">            
             <div class="nav">
-                <div class="sb-sidenav-menu-heading">Sistema</div>
-                    <a class="nav-link" routerLink="/home">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Dashboard
-                    </a>
+                <div *ngFor="let nivel1 of menuItens">
+                    <div class="sb-sidenav-menu-heading">{{ nivel1.label }}</div>                    
+                    
+                    <div *ngFor="let nivel2 of nivel1.children">
+                        <!-- Links sem filhos -->
+                        <div *ngIf="!nivel2.children">
+                            <a class="nav-link" [routerLink]="nivel2.route">
+                                <div class="sb-nav-link-icon"><i class="{{ nivel2.icon }}"></i></div>
+                                {{ nivel2.label }}
+                            </a>
+                        </div>
 
-                <div class="sb-sidenav-menu-heading">Serviços</div>
-                    <a class="nav-link collapsed" routerLink="/servico1" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts"
-                    ><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Servico 1                   
-                </a>                                             
-            </div>
-            
-            <div class="nav">
-                <div class="sb-sidenav-menu-heading">Relatórios</div>
-                <a class="nav-link" routerLink="/relatorio1">
-                    <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                        <!-- Links com filhos -->
+                        <div *ngIf="nivel2.children">                        
 
-                </a>               
+                            <a class="nav-link" href="#" 
+                                (click)="toggleMenu(nivel2)"
+                                [class.collapsed]="!nivel2.expanded" 
+                                [attr.aria-expanded]="nivel2.expanded">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div>
+                                    {{ nivel2.label }}
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
 
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDesenvolvedores" aria-expanded="false" aria-controls="collapseDesenvolvedores">
-                    <div class="sb-nav-link-icon"><i class="fas fa-list"></i></div> -
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapseDesenvolvedores" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">                        
-                            <a class="nav-link" routerLink="/relatorios/desenvolvedor-projetos">-</a>
-                    </nav>
+                            <div [ngClass]="{'collapse': true, 'show': nivel2.expanded}" id="menu-{{nivel2.label}}">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" *ngFor="let nivel3 of nivel2.children" 
+                                       [routerLink]="nivel3.route">
+                                        {{ nivel3.label }}
+                                    </a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-               
-            </div>    
-            <div class="nav" *ngIf="role === 'ADMIN'">
-                <div class="sb-sidenav-menu-heading">Configurações</div>
-                <a class="nav-link" routerLink="/usuarios"><div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>Usuários</a>
-            </div>                  
+            </div>
 
+            <!-- Logout -->
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Logout</div>
-                <a class="nav-link collapsed"  href="#" (click)="onLogout()"
-                data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                  <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
-                      Sair
+                <a class="nav-link" href="#" (click)="onLogout()">
+                    <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                    Sair
                 </a>    
             </div>
-            
-             
-            </div>
+        </div>
+
+        <!-- Rodapé -->
         <div class="sb-sidenav-footer">
-            <div class="small">Usuario Logado:</div>
+            <div class="small">Usuário Logado:</div>
             {{ usuarioLogado }} 
         </div>
     </nav>
